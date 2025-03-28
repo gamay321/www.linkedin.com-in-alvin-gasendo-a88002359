@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location App</title>
+</head>
+<body>
+
+    <h1> location</h1>
+    <input type="text " id="locationiInput" placeholder="Enter Location">
+    <button id="addLocationButton"> Add Location</button>
+    <ul id="locationList"></ul>
+
+    
+</body>
+
+<script>
+    document.getElementById('addLocationButton').addEventListener('click', function() {
+        const locationInput = document.getElementById('locationiInput');
+        const locationList = document.getElementById('locationList');
+
+        if (locationInput.value.trim() !== '') {
+            const listItem = document.createElement('li');
+            listItem.textContent = locationInput.value;
+            locationList.appendChild(listItem);
+            locationInput.value = '';
+        } else {
+            alert('Please enter a location.');
+        }
+    });
+</script>
+</html>
