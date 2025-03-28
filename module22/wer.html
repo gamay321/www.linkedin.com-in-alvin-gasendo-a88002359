@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wer-U: Friend Location Tracker & Weather Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #location, #weather {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wer-U: Friend Location Tracker & Weather Monitor</h1>
+    <div id="location">
+        <h2>Your Location</h2>
+        <p id="coords">Fetching location...</p>
+    </div>
+    <div id="weather">
+        <h2>Weather Information</h2>
+        <p id="weather-info">Fetching weather...</p>
+    </div>
+
+    <script>
+        // Get user's location
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("coords").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById("coords").innerText = `Latitude: ${lat}, Longitude: ${lon}`;
+            getWeather(lat, lon);
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("coords").innerText = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("coords").innerText = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("coords").innerText = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("coords").innerText = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+        // Fetch weather data
+        function getWeather(lat, lon) {
+            const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const weather = data.weather[0].description;
+                    const temp = data.main.temp;
+                    document.getElementById("weather-info").innerText = `Weather: ${weather}, Temperature: ${temp}°C`;
+                })
+                .catch(error => {
+                    document.getElementById("weather-info").innerText = "Unable to fetch weather data.";
+                });
+        }
+
+        // Initialize
+        getLocation();
+    </script>
+</body>
+</html>
+
+<style>
+    body {
+        background: linear-gradient(to right, #215be1, #b4d0ff);
+        color: #fff;
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    #location, #weather {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    p {
+        font-size: 1.2em;
+        line-height: 1.5;
+    }
+
+    button {
+        background: #2575fc;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #6a11cb;
+    }
+</style>

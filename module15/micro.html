@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder App</title>
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+        const { useState } = React;
+
+        function ReminderApp() {
+            const [reminders, setReminders] = useState([]);
+            const [input, setInput] = useState("");
+
+            const addReminder = () => {
+                if (input.trim()) {
+                    setReminders([...reminders, input]);
+                    setInput("");
+                }
+            };
+
+            const removeReminder = (index) => {
+                setReminders(reminders.filter((_, i) => i !== index));
+            };
+
+            return (
+                <div style={{ padding: "20px", fontFamily: "Arial" }}>
+                    <h1>Reminder App</h1>
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Enter a reminder"
+                    />
+                    <button onClick={addReminder}>Add</button>
+                    <ul>
+                        {reminders.map((reminder, index) => (
+                            <li key={index}>
+                                {reminder}{" "}
+                                <button onClick={() => removeReminder(index)}>Remove</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<ReminderApp />, document.getElementById("root"));
+    </script>
+</body>
+</html>
+
+<style>
+    body {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: #fff;
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    #root {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    input[type="text"] {
+        width: calc(100% - 90px);
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        outline: none;
+    }
+
+    button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        background: #2575fc;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    button:hover {
+        background: #6a11cb;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    li {
+        background: rgba(255, 255, 255, 0.2);
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    li button {
+        background: #ff4d4d;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+    }
+
+    li button:hover {
+        background: #ff1a1a;
+    }
+</style>
